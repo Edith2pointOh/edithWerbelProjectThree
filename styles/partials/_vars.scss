@@ -1,0 +1,27 @@
+
+// Colour scheme 
+
+$background-color: #4C494A;
+$font-color: #E3D4BA;
+$primary-color: #C25050;
+$accent-color: #C5D195;
+$accent-color2: #D59572;
+
+// Fonts
+
+$heading-font: 'Rubik', sans-serif;
+$body-font: 'Karla', sans-serif;
+
+// button mixin
+
+@mixin a-btnStyle() {
+    color: $font-color;
+    font-family: $heading-font;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    border: solid $primary-color;
+    background-color: $primary-color;
+    border-radius: 5%;
+    padding: 1px 5px;
+}
+

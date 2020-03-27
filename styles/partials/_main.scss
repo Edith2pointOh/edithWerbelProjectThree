@@ -1,0 +1,46 @@
+// globals
+
+html {
+    font-size: 125%;
+}
+
+body {
+    background-color: $background-color;
+    height: 100vh;
+}
+
+a {
+text-decoration: none;
+
+}
+
+// landing page
+
+h1 {
+    font-family: $heading-font;
+    font-size: 3rem;
+    font-weight: bold;
+    color: $font-color;
+    align-items: center;
+
+    span {
+        font-size: 4rem;
+    }
+}
+
+h2 {
+    font-family: $body-font;
+    color: $font-color;
+}
+
+.a-tag-btn{ 
+    @include a-btnStyle;
+}
+
+footer {
+    color: $font-color;
+    font-family: $body-font;
+    font-size: .8rem;
+    background-color: darken($background-color, 10%);
+    text-align: center;
+}
