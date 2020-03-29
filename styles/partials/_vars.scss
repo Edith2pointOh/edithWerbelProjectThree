@@ -22,6 +22,12 @@ $body-font: 'Karla', sans-serif;
     border: solid $primary-color;
     background-color: $primary-color;
     border-radius: 5%;
-    padding: 1px 5px;
+    padding: 2px 6px;
+    margin-bottom: 15px;
+    box-shadow: 1px 1px 1px $accent-color2;
+    &:hover {
+        color: $accent-color;
+        box-shadow: 1.5px 1.5px 1.5px $accent-color;
+    }
 }
 
