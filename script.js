@@ -4,19 +4,42 @@
 let workRound = 0;
 let moveRond = 0;
 
-$('.play-btn').on('click', function (){
-    // calls countDown25()
+let workTime = 1500;
+let intervalId;
+
+$('.work-display').append(" " + workRound);
+$('.move-display').append(" " + moveRond)
+
+// play button to change to pause on click
+$('.play-btn').on('click', function() {
+    countDown25();
     // toggles to pause button
-    $('.pause-btn').addClass($('.visible'));
-    $('.play-btn').replaceWith($('.pause-btn'));
+    $('.pause-btn').toggle();
+    $('.play-btn').toggle();
+})
+
+// convert time in seconds to min & sec and display time in digital clock
+function showTime() {
+    workTime--;
+    let minutes = Math.floor(workTime / 60);
+    let seconds = Math.floor(workTime % 60);
+    let output = minutes.toString().padStart(2, '0') + ':' +
+        seconds.toString().padStart(2, '0');
+    // console.log(output)
+    if (workTime == 0) {
+        clearInterval(intervalId)
+        // make bell sound
+    }
+    $('.countdown').html(output);
 }
 
-// countDown25() does the following:
-// -begins count down timer which is set to 25 min.
-//     - each second an event to trigger display clock to change time by 1 second.
-//     - add 1 to workRound
-//     - display Round in work round keeper display.
-//     - If statement to check if timer is at 0 seconds.if at 0, Move page loads over, via DOM manipulation
+function countDown25() {
+    intervalId = setInterval(showTime, 1000);
+    workRound++;
+    // make bell sound
+
+}
+
 
 // OnLoad, Move Page calls countDown5().
 // An exercise is presented via diagram and short description, chosen at random from array.
@@ -25,11 +48,11 @@ $('.play-btn').on('click', function (){
 
 // to toggle Work and Move pages to load over each other
 
-function toggleWorkToMove() {
-    $('.inner-container-move').toggle();
-    $('.inner-container-work').toggle();
-    $('.inner-container-work').replaceWith($('.inner-container-move'));
-}
+// function toggleWorkToMove() {
+//     $('.inner-container-move').toggle();
+//     $('.inner-container-work').toggle();
+//     $('.inner-container-work').replaceWith($('.inner-container-move'));
+// }
 
 function toggleMoveToWork() {
     $('inner-container-work').toggle();
@@ -54,6 +77,4 @@ function toggleMoveToWork() {
 // -toggle from countDown5 to countDown25;
 
 // If statement:
-// if workRound = 12 display end page "Congrats on a full day's work"
-
-
+// if workRound = 12 display end page "Congrats on a full day
