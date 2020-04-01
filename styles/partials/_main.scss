@@ -115,7 +115,7 @@ h3 {
     margin-bottom: 30px
 }
 
-.countdown {
+.work-countdown {
     font-size: 2.5rem;
 }
 
@@ -135,6 +135,10 @@ h3 {
 }
 
 .inner-container-move {
+    display: none;
+}
+
+.inner-container-end-page {
     display: none;
 }
 
