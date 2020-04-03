@@ -3,10 +3,11 @@ const alarm = $('#alarm')
 let workRound = 0;
 let moveRound = 0;
 
+let sessionTime;
 let workTime = 7;
 let moveTime = 5; 
 let remainingTime = 5;
-let isWorkTimeActive = false;
+let isWorkTimeActive = true;
 let intervalIdWork;
 let intervalIdMove;
 let intervalIdpasued;
@@ -23,12 +24,38 @@ function toDigital(sessionTime){
     let seconds = Math.floor(sessionTime % 60);
     let output = minutes.toString().padStart(2, '0') + ':' +
     seconds.toString().padStart(2, '0');
-    $('.work-countdown').html(output);    
-}
-
+    if (isWorkTimeActive){
+    $('.work-countdown').html(output); 
+    // TO LOAD END PAGE AFTER 12 WORK ROUNDS
+        if (sessionTime === 0 && workRound === 4) {
+            clearInterval(intervalIdWork);
+            $('.inner-container-work').replaceWith($('.inner-container-end-page'));
+            console.log("the end")
+        }  else if (sessionTime === 0) {
+            // alarm.play();
+            clearInterval(intervalIdWork);
+            // isWorkTimeActive = false;
+            moveSession();
+            workTime = 7;
+        }
+    }
+    else {
+        $('.move-countdown').html(output);
+        if (sessionTime === 0){
+            clearInterval(intervalIdMove)
+            // make bell sound
+            moveTime = 5;
+            workSession();
+        
+            }
+        }          
+    }   
+   
 // play button to change to pause on click
 
 $('.play-btn').on('click', function () {
+    $('.pause-btn').toggle();
+    $('.play-btn').toggle();
     if (workTime === 7){
     workSession();
     } else {
@@ -45,10 +72,7 @@ $('.play-btn').on('click', function () {
             workSession();
             // sound alarm
         }       
-        }
-    // toggles to pause button
-    $('.pause-btn').toggle();
-    $('.play-btn').toggle();
+        }  
 })
 
 // Pause btn
@@ -58,93 +82,35 @@ $('.pause-btn').on('click', function(){
     $('.pause-btn').toggle();
     $('.play-btn').toggle();
     remainingTime = Math.abs(0 - workTime);
+    console.log(remainingTime)
 })
 
-// function workSession() {
-//     isWorkTimeActive = true;
-//     $('.work-display').html("Round " + workRound);
-//     intervalIdWork = setInterval(function () {
-//         toDigital(workTime);
-//     }, 1000);
-//     // make bell sound
-// }
-
-
 function workSession() {
-    // workTime--;
-    if (isWorkTimeActive === false){
+    if (!isWorkTimeActive){
         $('.inner-container-move').toggle();
         $('.inner-container-work').toggle();
+        isWorkTimeActive = true;
     }
     workRound++;
-    isWorkTimeActive = true;
     remainingTime = Math.abs(0 - workTime);
-    $('.work-display').append(" " + workRound);
-    intervalIdWork = setInterval(function () {
-        toDigital(workTime);
+    $('.work-display').html("Round " + workRound);
+    intervalIdWork = setInterval(function() {
+        toDigital(workTime--);
     }, 1000);
-    if (workTime === 0 && workRound === 2 ){
-        clearInterval(intervalIdWork);
-        // / */ LOADS FINAL PAGE AFTER 12 WORK ROUNDS
-        $('.inner-container-work').replaceWith($('.inner-container-end-page'));
-        
-        // $('.inner-container-work').toggle();
-        // $('.inner-container-end-page').toggle();
-    }
-    else if (workTime === 0) {
-        // alarm.play();
-        clearInterval(intervalIdWork);
-        moveSession();   
-        workTime = 7;
-    }
 }
 
-// function moveSession() {
-//     moveRound++;
-//     isWorkTimeActive = false;
-//     $('.move-display').html("Round " + moveRound);
-//     intervalIdMove = setInterval(showTimeMove, 1000);
-//     // make bell sound
-// }
-
-
 function moveSession() {
+    isWorkTimeActive = false;
     $('.inner-container-move').toggle();
     $('.inner-container-work').toggle();
     // moveTime--;  
     moveRound++;
-    isWorkTimeActive = false;
     remainingTime = Math.abs(0 - workTime);
     $('.move-display').html("Round " + moveRound);
-    intervalIdWork = setInterval(function () {
-        toDigital(moveTime);
+    intervalIdMove = setInterval(function() {
+        toDigital(moveTime--);
     }, 1000);
-    if (moveTime === 0) {
-        clearInterval(intervalIdMove)
-        // make bell sound
-        workSession();
-        moveTime = 5;
-    }    
 }
-
-
-
-// // to toggle Work and Move pages to load over each other
-
-// function toggleWorkToMove() {
-//     $('.inner-container-move').toggle();
-//     $('.inner-container-work').toggle();
-//     // $('.inner-container-work').replaceWith($('.inner-container-move'));
-//     moveSession();
-//     }
-
-
-// function toggleMoveToWork() {
-//     $('.inner-container-work').toggle();
-//     $('.inner-container-move').toggle();
-//     // $('inner-container-move').replaceWith($('.inner-container-work'));
-//     workSession();
-// }
 
 // $('.skip-btn').on('click', function (){
 
