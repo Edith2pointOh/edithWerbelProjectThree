@@ -8,9 +8,10 @@ let workTime = 7;
 let moveTime = 5; 
 let remainingTime = 5;
 let isWorkTimeActive = true;
+let isPaused = false;
 let intervalIdWork;
 let intervalIdMove;
-let intervalIdpasued;
+let intervalIdpaused;
 let output;
 
 // const alarm = document.createElement('audio'); alarm.setAttribute("src", "https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3");
@@ -24,13 +25,14 @@ function toDigital(sessionTime){
     let seconds = Math.floor(sessionTime % 60);
     let output = minutes.toString().padStart(2, '0') + ':' +
     seconds.toString().padStart(2, '0');
-    if (isWorkTimeActive){
+    if (isWorkTimeActive && !isPaused){
     $('.work-countdown').html(output); 
     // TO LOAD END PAGE AFTER 12 WORK ROUNDS
         if (sessionTime === 0 && workRound === 4) {
             clearInterval(intervalIdWork);
             $('.inner-container-work').replaceWith($('.inner-container-end-page'));
             console.log("the end")
+     // ON END OF WORK SESSION CALL MOVE SESSION
         }  else if (sessionTime === 0) {
             // alarm.play();
             clearInterval(intervalIdWork);
@@ -38,51 +40,73 @@ function toDigital(sessionTime){
             moveSession();
             workTime = 7;
         }
-    }
-    else {
+    // ON END OF MOVES SESISON CALL WORK SESSION
+    } else if (!isWorkTimeActive && !isPaused){
         $('.move-countdown').html(output);
         if (sessionTime === 0){
             clearInterval(intervalIdMove)
             // make bell sound
             moveTime = 5;
-            workSession();
-        
+            workSession();    
             }
-        }          
-    }   
-   
+          
+     // RESUME A PAUSED SESSION
+     }  else if (isWorkTimeActive) {
+            $('.work-countdown').html(output);
+            if (sessionTime === 0){
+                clearInterval(intervalIdpaused);
+            isPaused = false;
+            moveSession();
+            }
+            // sound alarm
+        } else {
+            console.log("we here")
+            $('.move-countdown').html(output);
+                if (sessionTime === 0) {
+                    clearInterval(intervalIdpaused);
+                isPaused = false;
+                workSession();
+                    // sound alarm
+                }
+            } 
+}  
+  
 // play button to change to pause on click
 
 $('.play-btn').on('click', function () {
     $('.pause-btn').toggle();
     $('.play-btn').toggle();
-    if (workTime === 7){
+    // FOR THE INTIAL LAUCH OF APP
+    if (workTime === 7 && !isPaused){
     workSession();
     } else {
+        // ON RESUME SESSION CREATE NEW INTERVAL FOR REMAINING TIME
         intervalIdpasued = setInterval(function () {
-        toDigital(remainingTime); 
-        }, 1000);
-        if (remainingTime === 0 && isWorkTimeActive === true) {
-            clearInterval(intervalIdpasued);
-            moveSession();
-            // sound alarm
-        } else if
-            (remainingTime === 0 && isWorkTimeActive === false) {
-            clearInterval(intervalIdpasued);
-            workSession();
-            // sound alarm
-        }       
-        }  
+        toDigital(remainingTime--); 
+        }, 1000);     
+    }  
 })
 
 // Pause btn
 $('.pause-btn').on('click', function(){
-    clearInterval(intervalIdWork);
-    clearInterval(intervalIdMove);
     $('.pause-btn').toggle();
     $('.play-btn').toggle();
-    remainingTime = Math.abs(0 - workTime);
-    console.log(remainingTime)
+    // IF PAUSED ON WORK SESSION
+    if (isWorkTimeActive && !isPaused){
+        clearInterval(intervalIdWork);
+        isPaused = true;
+        remainingTime = Math.abs(0 - workTime);
+    // IF PAUSED ON MOVE SESSION
+    } else if (!isWorkTimeActive && !isPaused){
+        clearInterval(intervalIdMove);
+        isPaused = true;
+        remainingTime = Math.abs(0 - moveTime);
+    // IF PAUSED FOR SECOND TIME ON SAME SESSION
+    } else {
+        clearInterval(intervalIdpaused);
+        remainingTime = Math.abs(0 - remainingTime);
+    }
+    
 })
 
 function workSession() {
@@ -112,7 +136,13 @@ function moveSession() {
     }, 1000);
 }
 
-// $('.skip-btn').on('click', function (){
+$('.skip-btn').on('click', function (){
+    if (isWorkTimeActive){
+        moveSession();
+    } else {
+        workSession();
+    }
+})
 
 // })
 
