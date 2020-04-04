@@ -1,61 +1,88 @@
 
-let countDown;
-let workTime = 7;
-let workRound = 0;
-let remainingTime;
-let sessionTime;
+let counterId;
+let timerCount = 7;
+let breaks = [5 * 60, 5 * 60, 5 * 60, 25 * 60];
+let breaksIndex = 0;
+let workMode = true;
 let output;
-let countdown;
-let isPaused = false;
-let isWorkTimeActive = true;
 
 
-function timer(seconds) {
-    console.log("we made it to function")
-    clearInterval(countdown);
+$('.play-btn').on('click', function () {
+    $('.pause-btn').toggle();
+    $('.play-btn').toggle();
+    play();
+})
+
+function timer(func, seconds) {
     const now = Date.now();
     const then = now + seconds * 1000;
-    displayTimeLeft(seconds);
-
-    countdown = setInterval(() => {
-        const secondsLeft = Math.round((then - Date.now()) / 1000);
-        // check if we should stop it!
-        if (secondsLeft < 0) {
-            clearInterval(countdown);
-            return;
-        }
-        // display it
-        displayTimeLeft(secondsLeft);
+    // displayTimeLeft(seconds);
+    let id = setInterval(() => {
+        timerCount = Math.round((then - Date.now()) / 1000);
+        func();
     }, 1000);
+    return id;
 }
 
 function displayTimeLeft(seconds) {
     const minutes = Math.floor(seconds / 60);
     const RemainingSeconds = seconds % 60;
     output = minutes.toString().padStart(2, '0') + ':' +
-    RemainingSeconds.toString().padStart(2, '0');
-    $('.work-countdown').html(output);
+        RemainingSeconds.toString().padStart(2, '0');
+    // if (workMode) {
+    //     $('.work-countdown').html(output);
+    // } else {
+    //     $('.move-countdown').html(output);
+    // }
 }
 
-$('.play-btn').on('click', function () {
-    $('.pause-btn').toggle();
-    $('.play-btn').toggle();
-    // FOR THE INTIAL LAUCH OF APP
-    if (workTime === 7 && !isPaused) {
-        workSession();
-    }
-})
+function startWork() {
+    workMode = true;
+    switchMode();
+    timerCount = 25 * 60;
+    play();
+}
 
-    function workSession() {
-        if (!isWorkTimeActive) {
-            $('.inner-container-move').toggle();
-            $('.inner-container-work').toggle();
-            isWorkTimeActive = true;
+function switchMode() {
+    if (workMode) {
+        $('.work-countdown').html(output);
+    }
+    else {
+        $('move-countdown').html(output);
+    }
+}
+
+function startBreak() {
+    workMode = false;
+    switchMode();
+    timerCount = breaks[breaksIndex];
+    if (length(breaks) === breaksIndex) {
+        breaksIndex = 0;
+    }
+    else {
+        breaksIndex++;
+    }
+    play();
+}
+
+function pause() {
+    clearInterval(counterId);
+}
+
+function play(){
+    counterId = timer(function () {
+        if (timerCount <= 0 ) {
+            skip();
         }
-        workRound++;
-        // remainingTime = Math.abs(0 - workTime);
-        $('.work-display').html("Round " + workRound);
-        timer(workTime--);
+        displayTime(timerCount);
+    }, 1000)
+}
+
+function skip() {
+    if (workMode) {
+        startBreak();
     }
-
-
+    else {
+        startWork();
+    }
+}
