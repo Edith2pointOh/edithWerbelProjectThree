@@ -5,6 +5,8 @@ let breaks = [5 * 60, 5 * 60, 5 * 60, 25 * 60];
 let breaksIndex = 0;
 let workMode = true;
 let output;
+let workRound = 1;
+let moveRound = 1;
 
 
 $('.play-btn').on('click', function () {
@@ -13,10 +15,23 @@ $('.play-btn').on('click', function () {
     play();
 })
 
+$('.pause-btn').on('click', function() {
+    $('.pause-btn').toggle();
+    $('.play-btn').toggle();
+    pause();
+})
+
+$('.work-skip-btns').on('click', function() {
+    skip();
+})
+
+$('.move-skip-btns').on('click', function() {
+    skip();
+})
+
 function timer(func, seconds) {
     const now = Date.now();
-    const then = now + seconds * 1000;
-    // displayTimeLeft(seconds);
+    const then = now + (seconds * 1000);
     let id = setInterval(() => {
         timerCount = Math.round((then - Date.now()) / 1000);
         func();
@@ -29,34 +44,36 @@ function displayTimeLeft(seconds) {
     const RemainingSeconds = seconds % 60;
     output = minutes.toString().padStart(2, '0') + ':' +
         RemainingSeconds.toString().padStart(2, '0');
-    // if (workMode) {
-    //     $('.work-countdown').html(output);
-    // } else {
-    //     $('.move-countdown').html(output);
-    // }
+    if (workMode) {
+        $('.work-display').html("Round " + workRound);
+        $('.work-countdown').html(output);
+    } else {
+        $('.move-display').html("Round " + workRound);
+        $('.move-countdown').html(output);
+    }
 }
 
 function startWork() {
     workMode = true;
+    workRound++;
     switchMode();
-    timerCount = 25 * 60;
+    timerCount = 7;
+    // timerCount = 25 * 60;
     play();
 }
 
 function switchMode() {
-    if (workMode) {
-        $('.work-countdown').html(output);
-    }
-    else {
-        $('move-countdown').html(output);
-    }
+    $('.inner-container-work').toggle();
+    $('.inner-container-move').toggle();
 }
 
 function startBreak() {
     workMode = false;
+    moveRound++;
     switchMode();
-    timerCount = breaks[breaksIndex];
-    if (length(breaks) === breaksIndex) {
+    timerCount = 5;
+    // timerCount = breaks[breaksIndex];
+    if (breaks.length === breaksIndex) {
         breaksIndex = 0;
     }
     else {
@@ -71,14 +88,23 @@ function pause() {
 
 function play(){
     counterId = timer(function () {
-        if (timerCount <= 0 ) {
+        if (workRound === 2 && timerCount <= 0) {
+            clearInterval(counterId);
+            $('.inner-container-work').replaceWith($('.inner-container-end-page'));
+            // $('inner-container-work').toggle();
+            // $('inner-container-end-page').toggle();
+            console.log("the end")
+        }
+        else if (timerCount <= 0 ) {
+            clearInterval(counterId);
             skip();
         }
-        displayTime(timerCount);
-    }, 1000)
+        displayTimeLeft(timerCount);
+    }, timerCount);
 }
 
 function skip() {
+    clearInterval(counterId);
     if (workMode) {
         startBreak();
     }
