@@ -4,10 +4,23 @@ let timerCount = 7;
 let breaks = [5 * 60, 5 * 60, 5 * 60, 25 * 60];
 let breaksIndex = 0;
 let workMode = true;
-let output;
+let isPaused =true;
 let workRound = 1;
 let moveRound = 1;
+const bell = $('#sound');
+$fluidEl = $('body');
 
+
+
+// const videosArr = [
+//     {
+//         exercise: "Jumping Jacks",
+//         link: <iframe width="560" height="315" src="https://www.youtube.com/embed/jOgJkRcCzUI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+//     }
+// ]
+
+
+$(function (){
 
 $('.play-btn').on('click', function () {
     $('.pause-btn').toggle();
@@ -55,6 +68,7 @@ function displayTimeLeft(seconds) {
 
 function startWork() {
     workMode = true;
+    isPaused = false;
     workRound++;
     switchMode();
     timerCount = 7;
@@ -83,20 +97,20 @@ function startBreak() {
 }
 
 function pause() {
+    isPaused = true;
     clearInterval(counterId);
 }
 
 function play(){
     counterId = timer(function () {
-        if (workRound === 2 && timerCount <= 0) {
+        if (workRound === 12 && timerCount <= 0) {
             clearInterval(counterId);
-            $('.inner-container-work').replaceWith($('.inner-container-end-page'));
-            // $('inner-container-work').toggle();
-            // $('inner-container-end-page').toggle();
-            console.log("the end")
+            $('.inner-container-work').toggle();
+            $('.inner-container-end-page').toggle();
         }
         else if (timerCount <= 0 ) {
             clearInterval(counterId);
+            $('#sound')[0].play()
             skip();
         }
         displayTimeLeft(timerCount);
@@ -105,10 +119,24 @@ function play(){
 
 function skip() {
     clearInterval(counterId);
-    if (workMode) {
+    if (workRound === 12){
+        $('.inner-container-work').toggle();
+        $('.inner-container-end-page').toggle();
+    }
+    else if (workMode) {
+        if (isPaused){
+            $('.pause-btn').toggle();
+            $('.play-btn').toggle(); 
+        }
         startBreak();
     }
     else {
+        if (isPaused) {
+            $('.pause-btn').toggle();
+            $('.play-btn').toggle(); 
+        }
         startWork();
     }
 }
+
+});

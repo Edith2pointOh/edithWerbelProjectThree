@@ -15,8 +15,9 @@
 
 <body>
     <div>
+        <audio id="sound" src="small-bell-ringing-01.mp3"></audio>
         <div class="container">
-            <h1>DeskFit <span>X</span> Pomodoro</h1>
+            <h1 class="app-heading">DeskFit <span>X</span> Pomodoro</h1>
             <div class="inner-container-work">
                 <div class="work-skip-btns">
                     <div class="work-round">
@@ -33,6 +34,8 @@
                     <button class="pause-btn"><i class="fas fa-pause"></i></button>
                 </div>
             </div>
+
+            <!-- MOVE/ BREAK CONTAINER TO LOAD OVER -->
             <div class="inner-container-move">
                 <div class="move-skip-btns">
                     <div class="move-round">
@@ -41,22 +44,36 @@
                     </div>
                     <button class="skip-btn">skip</button>
                 </div>
-                <div class="exercise">
-                    <p>10 inch worms</p>
-                    <!-- <iframe src="https://www.youtube.com/embed/jOgJkRcCzUI" frameborder="0"
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe> -->
-                </div>
-                <div>
-                    <p class="move-countdown">5:00</p>
-                    <button class="play-btn"><i class="fas fa-play"></i></button>
-                    <button class="pause-btn"><i class="fas fa-pause"></i></button>
-                </div>
-                <div class="inner-container-end-page">
-                    <p>Congrats you've done it!</p>
+                <div class="exercise-box">
+                    <p class="excercise-name">10 inch worms</p>
+                    <div class="exercise-wrapper">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/jOgJkRcCzUI" frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="move-timer-btn">
+                        <p class="move-countdown">5:00</p>
+                        <button class="play-btn"><i class="fas fa-play"></i></button>
+                        <button class="pause-btn"><i class="fas fa-pause"></i></button>
+                    </div>
                 </div>
             </div>
+            <!-- <div>
+                <button class="play-btn"><i class="fas fa-play"></i></button>
+                <button class="pause-btn"><i class="fas fa-pause"></i></button>
+            </div> -->
         </div>
+
+        <!-- END PAGE TO LOAD UPON COMPLETION -->
+        <div class="inner-container-end-page">
+            <p>Congrats you've done it, a full day's work!</p>
+            <p>You worked for 5 hours, and moved for a bit over an hour and a half!</p>
+            <p>(Hey, it's better than nothing!)</p>
+            <i class="fas fa-walking"></i>
+            <a class="a-tag-btn" href="app.html">Let's go again!</a>
+
+        </div>
+    </div>
     </div>
     <div>
         <footer>
