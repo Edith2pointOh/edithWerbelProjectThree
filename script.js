@@ -14,12 +14,56 @@ $fluidEl = $('body');
 
 const videosArr = [
     {
-        exercise: "Jumping Jacks",
-        link: '<iframe src="https://www.youtube.com/embed/XocVw3xuYow" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+        exercise: '20 Reverse flys',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/6KwhXBjNdEw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
     },
     {
-        exercise: "Squats",
-        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/XocVw3xuYow" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+        exercise: '30 sec Chair boat hold',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/eEs1H1hCfSo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    },
+    {
+        exercise: '10 Lateral leg swings',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/fCcJdaH2NMA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    },
+    {
+        exercise: '10 glute kicks',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/CDFj82Ahftw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    },
+    {
+        exercise: '20 Calf raises',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/vkjEq5bgrsE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    },
+    {
+        exercise: '10 Thorasic rotations',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/lj3KsuoAauk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    },
+    {
+        exercise: '10 hip flexor to hamstring stretch',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/JL7HQSC_-Fk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    },
+    {
+        exercise: '10 forward leg swings',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/5fmbg9Dqf6c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    },
+    {
+        exercise: '20 twisting high march',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/PCLatN_23DQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    },
+    {
+        exercise: '10 shoulder rolls',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/No42FcPCTEI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    },
+    {
+        exercise: '10 Toe hold squat',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/WDEvVtMo2zU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    },
+    {
+        exercise: '10 Hip circles',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/7kcVAHQtk78" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    },
+    {
+        exercise: '10 Prisoner squats',
+        link: '<iframe width="560" height="315" src="https://www.youtube.com/embed/Z6HeNyTo58I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
     }
 ]
 
@@ -109,19 +153,19 @@ function startBreak() {
     else {
         breaksIndex++;
     }
+    displayTimeLeft(timerCount);
     togglePlayButton();
     play();
 }
 
-// choose random video
-// remove from original array
-// inset youtube video
-
+// CHOOSE RANDOM VIDEO, REMOVE FROM ARRAY, INSERT IN MOVE PAGE
 function insertVideo () {
     let randomVideo = Math.floor(Math.random() * videosArr.length);
     console.log(randomVideo);
     $('.excercise-name').text(videosArr[randomVideo].exercise);
-    $('.exercise-wrapper').replaceWith(videosArr[randomVideo].link);
+    $('iframe').replaceWith(videosArr[randomVideo].link);
+    videosArr.splice(randomVideo, 1);
+    console.log(videosArr);
 }
 
 function pause() {

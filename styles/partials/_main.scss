@@ -1,7 +1,4 @@
-// globals
-// div {
-//     border: solid 1px white;
-// }
+
 
 html {
     font-size: 125%;
@@ -10,8 +7,6 @@ html {
 body {
     background-color: $background-color;
     height: 100vh;
-    // padding: 50px 50px 15px;
-    // padding-bottom: 15px;
 }
 
 a {
@@ -113,12 +108,16 @@ h3 {
 .about {
     font-size: 1.2rem;
     margin-bottom: 25px;
+
+    @media(max-width: 621px){
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
     
 
      @media(max-width: 450px){
         font-size: .8rem;
         margin-bottom: 10px;
-        text-align: center;
         }
     
 }
@@ -137,7 +136,7 @@ h3 {
     }
 }
 
-.inner-container-work, .inner-container-move {
+.inner-container-work, .inner-container-move, .inner-container-end-page {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -179,7 +178,7 @@ h3 {
 .clock {
     border: 8px solid $accent-color2;
     border-radius: 50%;
-    padding: 80px;
+    padding: 85px;
     margin-bottom: 30px;
 
     @media(max-width: 450px){
@@ -190,9 +189,11 @@ h3 {
 .work-countdown {
     font-size: 2.5rem;
     text-align: center;
+    width: 150px;
 
     @media(max-width: 450px){
         font-size: 2rem;
+        width: 100px;
         }
 }
 
@@ -215,6 +216,7 @@ h3 {
 .move-countdown {
     font-size: 2.5rem;
     margin-right: 20px;
+    width: 130px;
 }
 
 .excercise-name {
@@ -247,7 +249,7 @@ h3 {
 // }
 
 .inner-container-move {
-    display: none;
+  display: none;
 }
 
 .inner-container-end-page {
@@ -261,11 +263,41 @@ h3 {
     visibility: visible;
 }
 
+// End page
+
+.inner-container-end-page {
+  width: 65%;
+  text-align: center;
+
+   @media(max-width: 642px){
+        width: 80%;
+        }
+
+    @media(max-width: 532px){
+        width: 90%;
+        }
+
+}
+
+
+.inner-container-end-page p:first-child {
+ font-size: 1.5rem;
+ margin-bottom: 20px;
+}
+
+.inner-container-end-page i {
+    font-size: 2.5rem;
+    color: $font-color;
+    margin-bottom: 20px;
+}
+
+.inner-container-end-page p:nth-child(4) {
+    margin-bottom: 30px;
+}
 
 // footer
 
 footer {
-    // position: absolute;
     position: fixed;
     bottom: 0;
     left: 0;
