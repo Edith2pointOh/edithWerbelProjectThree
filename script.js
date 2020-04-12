@@ -4,11 +4,11 @@ let timerCount = 25 * 60;
 let breaks = [5 * 60, 5 * 60, 5 * 60, 25 * 60];
 let breaksIndex = 0;
 let workMode = true;
-let isPaused =true;
+let playBttn =true;
 let workRound = 1;
 let moveRound = 1;
 const bell = $('#sound');
-$fluidEl = $('body');
+
 
 
 
@@ -73,7 +73,7 @@ $(function (){
 function togglePlayButton(){
     $('.pause-btn').toggle();
     $('.play-btn').toggle();
-    isPaused = !isPaused;
+    playBttn = !playBttn;
 }
 $('.play-btn').on('click', function () {
     togglePlayButton();
@@ -102,7 +102,6 @@ function timer(func, seconds) {
         timerCount = Math.round((then - Date.now()) / 1000);
         func();
     }, 1000);
-    console.log(`created in timer ${id}`);
     return id;
 }
 
@@ -124,12 +123,10 @@ function displayTimeLeft(seconds) {
 // WORK SESSION FUNCTION
 function startWork() {
     workMode = true;
-    isPaused = false;
     workRound++;
     switchMode();
     timerCount = 25 * 60;
     displayTimeLeft(timerCount);
-    togglePlayButton();
     play();
 }
 
@@ -142,47 +139,45 @@ function switchMode() {
 function startBreak() {
     insertVideo();
     workMode = false;
-    isPaused = false;
     moveRound++;
     switchMode();
-    timerCount = [5 * 60, 5 * 60, 5 * 60, 25 * 60];
     timerCount = breaks[breaksIndex];
-    if (breaks.length === breaksIndex) {
+    if (breaks.length -1 === breaksIndex) {
         breaksIndex = 0;
     }
     else {
         breaksIndex++;
     }
     displayTimeLeft(timerCount);
-    togglePlayButton();
     play();
 }
 
 // CHOOSE RANDOM VIDEO, REMOVE FROM ARRAY, INSERT IN MOVE PAGE
 function insertVideo () {
     let randomVideo = Math.floor(Math.random() * videosArr.length);
-    console.log(randomVideo);
     $('.excercise-name').text(videosArr[randomVideo].exercise);
     $('iframe').replaceWith(videosArr[randomVideo].link);
     videosArr.splice(randomVideo, 1);
-    console.log(videosArr);
 }
 
 function pause() {
-    console.log(`cleared in paused ${counterId}`);
+    if (!playBttn) {
+        togglePlayButton()
+    }
     clearInterval(counterId);
 }
 
 function play(){
+    if (playBttn) {
+        togglePlayButton()
+    }
     counterId = timer(function () {
         if (workRound === 12 && timerCount <= 0) {
-            console.log(`cleared in play ${counterId}`);
             clearInterval(counterId);
             $('.inner-container-work').toggle();
             $('.inner-container-end-page').toggle();
         }
         else if (timerCount <= 0 ) {
-            console.log(`cleared in timerCount ${counterId}`);
 
             clearInterval(counterId);
             $('#sound')[0].play()
@@ -193,25 +188,17 @@ function play(){
 }
 
 function skip() {
-    console.log(`cleared in skip ${counterId}`);
 
     clearInterval(counterId);
     if (workRound === 12){
         $('.inner-container-work').toggle();
         $('.inner-container-end-page').toggle();
+        return;
     }
-    else if (workMode) {
-        if (!isPaused){
-            $('.pause-btn').toggle();
-            $('.play-btn').toggle(); 
-        }
+    if (workMode) {
         startBreak();
     }
     else {
-        if (!isPaused) {
-            $('.pause-btn').toggle();
-            $('.play-btn').toggle(); 
-        }
         startWork();
     }
 }
